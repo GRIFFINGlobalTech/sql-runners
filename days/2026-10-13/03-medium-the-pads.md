@@ -6,7 +6,7 @@
 | Difficulty | Medium |
 | Link       | [HackerRank](https://www.hackerrank.com/challenges/the-pads/problem) |
 | Dialect    | MySQL |
-| Status     | Failed |
+| Status     | Passed |
 
 ## Problem
 
@@ -64,7 +64,9 @@ ORDER BY COUNT(*), Occupation;
 
 ## Notes (if it fails)
 
-**What the grader showed:** `Wrong Answer`, 1/1 test case failed. The output was a 4-column grid of names with `NULL`s:
+> **Resolved:** the first submission failed; resubmitting the query above **passed**.
+
+**What the grader showed (first attempt):** `Wrong Answer`, 1/1 test case failed. The output was a 4-column grid of names with `NULL`s:
 
 ```
 Aamina Ashley Christeen Eve
