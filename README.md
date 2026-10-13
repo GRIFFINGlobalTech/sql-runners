@@ -29,7 +29,7 @@ Every question file contains: link to the question, difficulty, intuition, solut
 .\scripts\new-day.ps1 -Questions the-blunder, japanese-cities-attributes, binary-search-tree-1, `
     new-companies, challenges, contest-leaderboard
 
-# 2. Solve them and fill in Problem / Intuition / Walkthrough / SQL.
+# 2. Solve them and fill in Problem / Intuition / Walkthrough / SQL (+ Notes if a submission failed).
 #    Set each Status row to Passed or Failed (new files start as Pending).
 
 # 3. Refresh the indexes, then commit

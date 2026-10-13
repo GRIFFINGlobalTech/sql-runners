@@ -25,3 +25,8 @@
 ```sql
 -- paste your accepted HackerRank solution here
 ```
+
+## Notes (if it fails)
+
+<!-- Only if a submission failed: what the grader showed, why it was wrong, and the fix.
+     Keep the failed query here too, so the mistake stays visible. Delete this section if it passed first time. -->
