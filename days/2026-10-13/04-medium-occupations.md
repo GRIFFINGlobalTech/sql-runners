@@ -6,7 +6,7 @@
 | Difficulty | Medium |
 | Link       | [HackerRank](https://www.hackerrank.com/challenges/occupations/problem) |
 | Dialect    | MySQL (8.0+) |
-| Status     | Passed |
+| Status     | Failed |
 
 ## Problem
 
@@ -37,7 +37,7 @@ NULL Naomi NULL NULL
 NULL Priyanka NULL NULL
 ```
 
-## SQL
+## SQL (corrected solution)
 
 ```sql
 SELECT
@@ -56,9 +56,9 @@ ORDER BY rn;
 
 ## Notes (if it fails)
 
-> **Resolved:** the first submission failed; resubmitting the query above **passed**.
+> **Correction:** the original submission failed. The query in **SQL (corrected solution)** above is the corrected solution. Status stays **Failed** to keep an honest record of the attempt.
 
-**What the grader showed (first attempt):** `Wrong Answer`.
+**What the grader showed (original submission):** `Wrong Answer`.
 
 **Checklist, most likely cause first:**
 
