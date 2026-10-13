@@ -53,11 +53,15 @@ foreach ($day in $days) {
     }
     $passed = @($qs | Where-Object Status -eq 'Passed').Count
     $failed = @($qs | Where-Object Status -eq 'Failed').Count
+    $covers = (@('Easy', 'Medium', 'Hard') | ForEach-Object {
+        $n = @($qs | Where-Object Difficulty -eq $_).Count
+        if ($n) { "$n $_" }
+    }) -join ', '
 
     $readme = @"
 # SQL Runner - $($day.Name)
 
-Passed: **$passed / $($qs.Count)** &nbsp;|&nbsp; Failed: **$failed**
+Covers: **$covers** &nbsp;|&nbsp; Passed: **$passed / $($qs.Count)** &nbsp;|&nbsp; Failed: **$failed**
 
 | # | Difficulty | Question | Link | Status |
 |---|------------|----------|------|--------|
