@@ -6,7 +6,7 @@
 | Difficulty | Hard |
 | Link       | [HackerRank](https://www.hackerrank.com/challenges/interviews/problem) |
 | Dialect    | MySQL |
-| Status     | [ ] Not solved |
+| Status     | Pending |
 
 ## Problem
 

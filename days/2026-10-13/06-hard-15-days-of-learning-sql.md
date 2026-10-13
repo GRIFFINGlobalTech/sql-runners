@@ -6,7 +6,7 @@
 | Difficulty | Hard |
 | Link       | [HackerRank](https://www.hackerrank.com/challenges/15-days-of-learning-sql/problem) |
 | Dialect    | MySQL |
-| Status     | [ ] Not solved |
+| Status     | Pending |
 
 ## Problem
 
