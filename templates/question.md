@@ -6,7 +6,7 @@
 | Difficulty | {{DIFFICULTY}} |
 | Link       | [HackerRank]({{LINK}}) |
 | Dialect    | MySQL |
-| Status     | [ ] Not solved |
+| Status     | Pending |
 
 ## Problem
 

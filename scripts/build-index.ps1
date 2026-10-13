@@ -3,8 +3,9 @@
   Rebuilds every days/<date>/README.md and the Log table in the root README.md
   from the question files themselves (title, difficulty, link, status).
 
-  Run it any time you add, rename, or mark a question solved.
-  A question counts as solved when its Status row reads "[x] ...".
+  Run it any time you add, rename, or change a question's status.
+  Status is the value in the question's Status row: Passed, Failed or Pending.
+  Anything unrecognised is treated as Pending.
 
 .EXAMPLE
   .\scripts\build-index.ps1
@@ -14,15 +15,27 @@ $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $utf8 = New-Object System.Text.UTF8Encoding($false)   # no BOM, so GitHub renders cleanly
 
+# Built from code points so the script stays ASCII (Windows PowerShell 5.1 reads BOM-less files as ANSI).
+$badge = @{
+    Passed  = [char]::ConvertFromUtf32(0x2705) + ' Passed'
+    Failed  = [char]::ConvertFromUtf32(0x274C) + ' Failed'
+    Pending = [char]::ConvertFromUtf32(0x23F3) + ' Pending'
+}
+
 function Read-Question([System.IO.FileInfo]$file) {
     $text   = [IO.File]::ReadAllText($file.FullName)
     $title  = if ($text -match '(?m)^#\s+(.+?)\s*$') { $Matches[1] } else { $file.BaseName }
     $diff   = if ($text -match '(?m)^\|\s*Difficulty\s*\|\s*(.+?)\s*\|') { $Matches[1] } else { '?' }
     $link   = if ($text -match '(?m)^\|\s*Link\s*\|\s*\[[^\]]*\]\(([^)]+)\)') { $Matches[1] } else { '' }
-    $solved = $text -match '(?m)^\|\s*Status\s*\|\s*\[[xX]\]'
+    $raw    = if ($text -match '(?m)^\|\s*Status\s*\|\s*(.+?)\s*\|') { $Matches[1] } else { '' }
+    $status = switch -Regex ($raw) {
+        'pass|\[[xX]\]' { 'Passed'; break }
+        'fail'          { 'Failed'; break }
+        default         { 'Pending' }
+    }
     [pscustomobject]@{
         N = $file.Name.Substring(0, 2); File = $file.Name; Title = $title
-        Difficulty = $diff; Link = $link; Solved = $solved
+        Difficulty = $diff; Link = $link; Status = $status
     }
 }
 
@@ -36,17 +49,17 @@ foreach ($day in $days) {
             ForEach-Object { Read-Question $_ })
 
     $rows = foreach ($q in $qs) {
-        $mark = if ($q.Solved) { '[x]' } else { '[ ]' }
-        "| $($q.N) | $($q.Difficulty) | [$($q.Title)]($($q.File)) | [HackerRank]($($q.Link)) | $mark |"
+        "| $($q.N) | $($q.Difficulty) | [$($q.Title)]($($q.File)) | [HackerRank]($($q.Link)) | $($badge[$q.Status]) |"
     }
-    $solvedCount = @($qs | Where-Object Solved).Count
+    $passed = @($qs | Where-Object Status -eq 'Passed').Count
+    $failed = @($qs | Where-Object Status -eq 'Failed').Count
 
     $readme = @"
 # SQL Runner - $($day.Name)
 
-Solved: **$solvedCount / $($qs.Count)**
+Passed: **$passed / $($qs.Count)** &nbsp;|&nbsp; Failed: **$failed**
 
-| # | Difficulty | Question | Link | Solved |
+| # | Difficulty | Question | Link | Status |
 |---|------------|----------|------|--------|
 $($rows -join "`n")
 "@
@@ -54,7 +67,7 @@ $($rows -join "`n")
 
     $byDiff = { param($d) (@($qs | Where-Object Difficulty -eq $d | ForEach-Object Title)) -join ', ' }
     $logRows += "| [$($day.Name)](days/$($day.Name)) | [``$($day.Name)``](../../tree/$($day.Name)/days/$($day.Name)) | " +
-                "$(& $byDiff 'Easy') | $(& $byDiff 'Medium') | $(& $byDiff 'Hard') | $solvedCount/$($qs.Count) |"
+                "$(& $byDiff 'Easy') | $(& $byDiff 'Medium') | $(& $byDiff 'Hard') | $passed/$($qs.Count) |"
 }
 
 # Replace everything between the LOG markers in the root README.
@@ -62,7 +75,7 @@ $rootReadme = Join-Path $root 'README.md'
 $text = [IO.File]::ReadAllText($rootReadme)
 $table = @"
 <!-- LOG:START -->
-| Date | Branch | Easy | Medium | Hard | Solved |
+| Date | Branch | Easy | Medium | Hard | Passed |
 |------|--------|------|--------|------|--------|
 $($logRows -join "`n")
 <!-- LOG:END -->

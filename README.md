@@ -30,7 +30,7 @@ Every question file contains: link to the question, difficulty, intuition, solut
     new-companies, challenges, contest-leaderboard
 
 # 2. Solve them and fill in Problem / Intuition / Walkthrough / SQL.
-#    When one is accepted, change its Status row to "[x] Solved".
+#    Set each Status row to Passed or Failed (new files start as Pending).
 
 # 3. Refresh the indexes, then commit
 .\scripts\build-index.ps1
