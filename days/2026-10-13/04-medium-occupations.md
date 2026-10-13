@@ -6,7 +6,7 @@
 | Difficulty | Medium |
 | Link       | [HackerRank](https://www.hackerrank.com/challenges/occupations/problem) |
 | Dialect    | MySQL (8.0+) |
-| Status     | Failed |
+| Status     | Passed |
 
 ## Problem
 
@@ -46,18 +46,19 @@ SELECT
     MAX(CASE WHEN Occupation = 'Singer'    THEN Name END) AS Singer,
     MAX(CASE WHEN Occupation = 'Actor'     THEN Name END) AS Actor
 FROM (
-    SELECT Name,
-           Occupation,
+    SELECT Name, Occupation,
            ROW_NUMBER() OVER (PARTITION BY Occupation ORDER BY Name) AS rn
     FROM OCCUPATIONS
-) t
+) AS t
 GROUP BY rn
 ORDER BY rn;
 ```
 
 ## Notes (if it fails)
 
-**What the grader showed:** `Wrong Answer`.
+> **Resolved:** the first submission failed; resubmitting the query above **passed**.
+
+**What the grader showed (first attempt):** `Wrong Answer`.
 
 **Checklist, most likely cause first:**
 
