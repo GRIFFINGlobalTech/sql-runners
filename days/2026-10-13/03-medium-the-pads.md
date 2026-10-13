@@ -6,7 +6,7 @@
 | Difficulty | Medium |
 | Link       | [HackerRank](https://www.hackerrank.com/challenges/the-pads/problem) |
 | Dialect    | MySQL |
-| Status     | Passed |
+| Status     | Failed |
 
 ## Problem
 
@@ -49,7 +49,7 @@ These are **two independent queries in one submission**, run one after the other
 4. `ORDER BY COUNT(*), Occupation` puts the smallest count first and breaks ties alphabetically (doctor before singer, actor before professor).
 5. Each query ends with `;`.
 
-## SQL
+## SQL (corrected solution)
 
 ```sql
 SELECT CONCAT(Name, '(', LEFT(Occupation, 1), ')')
@@ -64,9 +64,9 @@ ORDER BY COUNT(*), Occupation;
 
 ## Notes (if it fails)
 
-> **Resolved:** the first submission failed; resubmitting the query above **passed**.
+> **Correction:** the original submission failed. The query in **SQL (corrected solution)** above is the corrected solution. Status stays **Failed** to keep an honest record of the attempt.
 
-**What the grader showed (first attempt):** `Wrong Answer`, 1/1 test case failed. The output was a 4-column grid of names with `NULL`s:
+**What the grader showed (original submission):** `Wrong Answer`, 1/1 test case failed. The output was a 4-column grid of names with `NULL`s:
 
 ```
 Aamina Ashley Christeen Eve
