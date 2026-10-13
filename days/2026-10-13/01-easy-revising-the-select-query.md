@@ -6,7 +6,7 @@
 | Difficulty | Easy |
 | Link       | [HackerRank](https://www.hackerrank.com/challenges/revising-the-select-query/problem) |
 | Dialect    | MySQL |
-| Status     | [x] Solved |
+| Status     | Passed |
 
 ## Problem
 

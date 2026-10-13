@@ -6,7 +6,7 @@
 | Difficulty | Medium |
 | Link       | [HackerRank](https://www.hackerrank.com/challenges/the-pads/problem) |
 | Dialect    | MySQL |
-| Status     | [ ] Not solved |
+| Status     | Pending |
 
 ## Problem
 

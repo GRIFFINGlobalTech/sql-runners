@@ -6,7 +6,7 @@
 | Difficulty | Medium |
 | Link       | [HackerRank](https://www.hackerrank.com/challenges/occupations/problem) |
 | Dialect    | MySQL (8.0+) |
-| Status     | [ ] Not solved |
+| Status     | Pending |
 
 ## Problem
 
