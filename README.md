@@ -37,7 +37,19 @@ Every question file contains: link to the question, difficulty, intuition, solut
 git add days/<today> README.md
 git commit -m "SQL Runner <today>"
 git push -u origin <today>
+
+# 4. Merge the day into main (merge commit keeps each day as one unit in history)
+git checkout main
+git merge --no-ff <today> -m "Merge day <today>"
+git push origin main
 ```
+
+## Branching
+
+| Branch | Purpose |
+|--------|---------|
+| `main` | Stable catalog: tooling + every merged day. This is the link to share. |
+| `yyyy-MM-dd` | One branch per practice day, cut from `main`, merged back with `--no-ff`. Kept as a record of that day. |
 
 ## Log
 
