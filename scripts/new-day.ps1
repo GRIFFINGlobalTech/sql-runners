@@ -1,7 +1,8 @@
 <#
 .SYNOPSIS
-  Scaffolds a day of SQL practice: a dated folder, 6 question files (2 easy, 2 medium, 2 hard)
-  and a git branch named after the date. Then rebuilds the READMEs via build-index.ps1.
+  Scaffolds a day of SQL practice: a dated folder at the repo root (e.g. 2026-10-14/) with
+  6 question files (2 easy, 2 medium, 2 hard). Then rebuilds the READMEs via build-index.ps1.
+  Work happens on main; pass -Branch only if you want a review branch for that day.
 
   Pass -Questions with up to 6 HackerRank links (or slugs) in slot order:
   easy, easy, medium, medium, hard, hard. The files are named and titled from the slug.
@@ -11,7 +12,7 @@
 .EXAMPLE
   .\scripts\new-day.ps1                    # today, placeholder files
   .\scripts\new-day.ps1 -Date 2026-10-14   # a specific day
-  .\scripts\new-day.ps1 -NoBranch          # folder only, stay on current branch
+  .\scripts\new-day.ps1 -Branch            # also create/check out a branch named after the date
   .\scripts\new-day.ps1 -Questions `
       https://www.hackerrank.com/challenges/revising-the-select-query/problem, `
       japanese-cities-attributes, `
@@ -21,7 +22,7 @@
 param(
     [string]$Date = (Get-Date -Format 'yyyy-MM-dd'),
     [string[]]$Questions = @(),
-    [switch]$NoBranch
+    [switch]$Branch
 )
 
 $ErrorActionPreference = 'Stop'
@@ -31,11 +32,11 @@ if ($Questions.Count -gt 6) { throw "At most 6 questions (2 easy, 2 medium, 2 ha
 
 $root     = Split-Path -Parent $PSScriptRoot
 $template = Get-Content (Join-Path $root 'templates\question.md') -Raw
-$dayDir   = Join-Path $root "days\$Date"
+$dayDir   = Join-Path $root $Date
 $utf8     = New-Object System.Text.UTF8Encoding($false)
 $textInfo = (Get-Culture).TextInfo
 
-if (-not $NoBranch) {
+if ($Branch) {
     Push-Location $root
     try {
         git rev-parse --verify --quiet "refs/heads/$Date" | Out-Null

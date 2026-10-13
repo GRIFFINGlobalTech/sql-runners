@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Rebuilds every days/<date>/README.md and the Log table in the root README.md
+  Rebuilds every <date>/README.md (date folders sit at the repo root) and the Log table in the root README.md
   from the question files themselves (title, difficulty, link, status).
 
   Run it any time you add, rename, or change a question's status.
@@ -40,7 +40,7 @@ function Read-Question([System.IO.FileInfo]$file) {
 }
 
 $logRows = @()
-$days = Get-ChildItem (Join-Path $root 'days') -Directory |
+$days = Get-ChildItem $root -Directory |
         Where-Object { $_.Name -match '^\d{4}-\d{2}-\d{2}$' } | Sort-Object Name
 
 foreach ($day in $days) {
@@ -70,7 +70,7 @@ $($rows -join "`n")
     [IO.File]::WriteAllText((Join-Path $day.FullName 'README.md'), $readme + "`n", $utf8)
 
     $byDiff = { param($d) (@($qs | Where-Object Difficulty -eq $d | ForEach-Object Title)) -join ', ' }
-    $logRows += "| [$($day.Name)](days/$($day.Name)) | [``$($day.Name)``](../../tree/$($day.Name)/days/$($day.Name)) | " +
+    $logRows += "| [$($day.Name)]($($day.Name)) | " +
                 "$(& $byDiff 'Easy') | $(& $byDiff 'Medium') | $(& $byDiff 'Hard') | $passed/$($qs.Count) |"
 }
 
@@ -79,8 +79,8 @@ $rootReadme = Join-Path $root 'README.md'
 $text = [IO.File]::ReadAllText($rootReadme)
 $table = @"
 <!-- LOG:START -->
-| Date | Branch | Easy | Medium | Hard | Passed |
-|------|--------|------|--------|------|--------|
+| Date | Easy | Medium | Hard | Passed |
+|------|------|--------|------|--------|
 $($logRows -join "`n")
 <!-- LOG:END -->
 "@
