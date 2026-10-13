@@ -1,6 +1,6 @@
 # SQL Runner - 2026-10-13
 
-Passed: **2 / 4** &nbsp;|&nbsp; Failed: **2**
+Covers: **2 Easy, 2 Medium** &nbsp;|&nbsp; Passed: **2 / 4** &nbsp;|&nbsp; Failed: **2**
 
 | # | Difficulty | Question | Link | Status |
 |---|------------|----------|------|--------|
