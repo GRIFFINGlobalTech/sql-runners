@@ -26,7 +26,8 @@ function Read-Question([System.IO.FileInfo]$file) {
     $text   = [IO.File]::ReadAllText($file.FullName)
     $title  = if ($text -match '(?m)^#\s+(.+?)\s*$') { $Matches[1] } else { $file.BaseName }
     $diff   = if ($text -match '(?m)^\|\s*Difficulty\s*\|\s*(.+?)\s*\|') { $Matches[1] } else { '?' }
-    $link   = if ($text -match '(?m)^\|\s*Link\s*\|\s*\[[^\]]*\]\(([^)]+)\)') { $Matches[1] } else { '' }
+    $link   = ''; $site = 'HackerRank'
+    if ($text -match '(?m)^\|\s*Link\s*\|\s*\[([^\]]*)\]\(([^)]+)\)') { $site = $Matches[1]; $link = $Matches[2] }
     $raw    = if ($text -match '(?m)^\|\s*Status\s*\|\s*(.+?)\s*\|') { $Matches[1] } else { '' }
     $status = switch -Regex ($raw) {
         'pass|\[[xX]\]' { 'Passed'; break }
@@ -35,7 +36,7 @@ function Read-Question([System.IO.FileInfo]$file) {
     }
     [pscustomobject]@{
         N = $file.Name.Substring(0, 2); File = $file.Name; Title = $title
-        Difficulty = $diff; Link = $link; Status = $status
+        Difficulty = $diff; Link = $link; Site = $site; Status = $status
     }
 }
 
@@ -49,7 +50,7 @@ foreach ($day in $days) {
             ForEach-Object { Read-Question $_ })
 
     $rows = foreach ($q in $qs) {
-        "| $($q.N) | $($q.Difficulty) | [$($q.Title)]($($q.File)) | [HackerRank]($($q.Link)) | $($badge[$q.Status]) |"
+        "| $($q.N) | $($q.Difficulty) | [$($q.Title)]($($q.File)) | [$($q.Site)]($($q.Link)) | $($badge[$q.Status]) |"
     }
     $passed = @($qs | Where-Object Status -eq 'Passed').Count
     $failed = @($qs | Where-Object Status -eq 'Failed').Count
